@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS portion_text;
 CREATE TABLE categorie(
   id integer primary key AUTOINCREMENT,
   libelle text NOT NULL,
+  id_categorie_parent integer constraint fk_categorie_parent references categorie(id)
 );
 
 CREATE TABLE portion_text(
@@ -13,9 +14,9 @@ CREATE TABLE portion_text(
   id_categorie integer constraint fk_categorie_portion references categorie(id)
 );
 
-CREATE TABLE contient(
-  
-);
 
-INSERT INTO categorie  VALUES ('1',"test 1",'');
-INSERT INTO categorie  VALUES ('2',"sous test 1",'1');
+INSERT INTO categorie  VALUES ('1','root','');
+INSERT INTO categorie  VALUES ('2','fils 1','1');
+INSERT INTO categorie  VALUES ('3','fils 2','1');
+INSERT INTO categorie  VALUES ('4','petit fils 1','2');
+INSERT INTO categorie  VALUES ('5','petit fils 2','2');

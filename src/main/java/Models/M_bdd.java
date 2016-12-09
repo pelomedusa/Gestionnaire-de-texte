@@ -1,7 +1,8 @@
-package Controllers;
+package Models;
 
-import App.categorie;
-import App.portion_text;
+import App.Categorie;
+import App.Portion_text;
+import org.sqlite.SQLiteException;
 
 import java.io.InputStream;
 import java.sql.*;
@@ -12,12 +13,12 @@ import java.util.Scanner;
 /**
  * Created by Bobol on 06/12/2016.
  */
-public class bdd {
+public class M_bdd {
 
     private String database_name;
     protected Connection connect;
 
-    public bdd(String name) throws ClassNotFoundException, SQLException {
+    public M_bdd(String name) throws ClassNotFoundException, SQLException {
         database_name = name;
         Class.forName("org.sqlite.JDBC");
         String url = "jdbc:sqlite:db/" + name;
@@ -43,7 +44,7 @@ public class bdd {
 
                 if (line.trim().length() > 0)
                 {
-                    st.execute(line);
+                        st.execute(line);
                 }
             }
         }
@@ -69,15 +70,15 @@ public class bdd {
         rs.close();
     }
 
-    public List<categorie> getAllCategorie() throws SQLException {
-        List<categorie> list_cate = new ArrayList<categorie>();
+    public List<Categorie> getAllCategorie() throws SQLException {
+        List<Categorie> list_cate = new ArrayList<Categorie>();
         Statement st = connect.createStatement();
         ResultSet rs = st.executeQuery("SELECT * FROM categorie");
         while ( rs.next() ) {
             int id = rs.getInt("id");
             String libelle = rs.getString("libelle");
             int id_parent = rs.getInt("id_categorie_parent");
-            list_cate.add(new categorie(id,libelle,id_parent));
+            list_cate.add(new Categorie(id,libelle,id_parent));
         }
 
         st.close();
@@ -85,8 +86,8 @@ public class bdd {
         return list_cate;
     }
 
-    public List<portion_text> getAllPortionText() throws SQLException {
-        List<portion_text> list_portion = new ArrayList<portion_text>();
+    public List<Portion_text> getAllPortionText() throws SQLException {
+        List<Portion_text> list_portion = new ArrayList<Portion_text>();
         Statement st = connect.createStatement();
         ResultSet rs = st.executeQuery("SELECT * FROM portion_text");
         while ( rs.next() ) {
@@ -94,7 +95,7 @@ public class bdd {
             String contenu = rs.getString("contenu");
             String mot_cle = rs.getString("mot_cle");
             int id_cat = rs.getInt("id_categorie");
-            list_portion.add(new portion_text(id,id_cat,contenu,mot_cle));
+            list_portion.add(new Portion_text(id,id_cat,contenu,mot_cle));
         }
 
         st.close();
