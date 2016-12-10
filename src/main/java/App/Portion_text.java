@@ -16,5 +16,40 @@ public class Portion_text {
         this.mot_cle = mot_cle;
     }
 
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId_categorie() {
+        return id_categorie;
+    }
+
+    public void setId_categorie(int id_categorie) {
+        this.id_categorie = id_categorie;
+    }
+
+    public String getContenu() {
+        return contenu;
+    }
+
+    public void setContenu(String contenu) {
+        this.contenu = contenu;
+    }
+
+    public String getMot_cle() {
+        return mot_cle;
+    }
+
+    public void setMot_cle(String mot_cle) {
+        this.mot_cle = mot_cle;
+    }
+
+    @Override
+    public String toString() {
+        return this.mot_cle;
+    }
 }

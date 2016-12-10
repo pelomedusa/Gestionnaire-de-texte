@@ -13,6 +13,9 @@ public class M_window {
     private Dimension sizePanoToolbar;
     private Dimension sizePanoPreview;
     private Dimension sizePanoResult;
+    private Dimension sizeTaPreview;
+    private Dimension sizeTree;
+    private Dimension sizeTaResult;
 
     public M_window(){
         this.title = "Gestionnaire de texte";
@@ -25,9 +28,12 @@ public class M_window {
         int width = (int) sizeWindow.getWidth()-20;
 
         this.sizePanoTree = new Dimension(width/4,500);
+        this.sizeTree = new Dimension(width/4-20,500-20);
         this.sizePanoToolbar = new Dimension((width/4)*3,100);
         this.sizePanoPreview = new Dimension((width/4)*3,400);
+        this.sizeTaPreview = new Dimension((width/4)*3-20,400-20);
         this.sizePanoResult = new Dimension(width,250);
+        this.sizeTaResult = new Dimension(width-20,250-20);
 
     }
 
@@ -79,4 +85,27 @@ public class M_window {
         this.sizePanoResult = sizePanoResult;
     }
 
+    public Dimension getSizeTaPreview() {
+        return sizeTaPreview;
+    }
+
+    public void setSizeTaPreview(Dimension sizeTaPreview) {
+        this.sizeTaPreview = sizeTaPreview;
+    }
+
+    public Dimension getSizeTree() {
+        return sizeTree;
+    }
+
+    public void setSizeTree(Dimension sizeTree) {
+        this.sizeTree = sizeTree;
+    }
+
+    public Dimension getSizeTaResult() {
+        return sizeTaResult;
+    }
+
+    public void setSizeTaResult(Dimension sizeTaResult) {
+        this.sizeTaResult = sizeTaResult;
+    }
 }

@@ -1,6 +1,8 @@
 package Views;
 
 import App.Categorie;
+import App.Portion_text;
+import Models.M_bdd;
 import Models.M_window;
 
 import javax.swing.*;
@@ -13,16 +15,19 @@ import java.awt.*;
 /**
  * Created by Pelomedusa on 08/12/2016.
  */
-public class V_window extends JFrame implements TreeSelectionListener {
+public class V_window extends JFrame {
+    private M_bdd model_bdd;
     private M_window model;
 
     private JPanel panoMain, panoTree, panoToolbar, panoPreview, panoResult;
-
+    private JTextArea taPreview,taResult;
+    private JButton btAddCategory, btAddPortion;
     protected JTree tree;
 
-    public V_window(M_window model){
+    public V_window(M_window model, M_bdd mBdd){
         super();
         this.model = model;
+        this.model_bdd = mBdd;
     }
 
     public void init(DefaultMutableTreeNode top){
@@ -40,16 +45,14 @@ public class V_window extends JFrame implements TreeSelectionListener {
 
         GridBagConstraints gbc = new GridBagConstraints();
 
-        panoTree= new JPanel();
-        panoTree.setBackground(Color.BLUE);
+        panoTree= new JPanel(new FlowLayout(FlowLayout.LEADING, 10, 10));
         panoTree.setPreferredSize(model.getSizePanoTree());
         this.tree = new JTree(top);
-        this.tree.setPreferredSize(new Dimension(150,400));
+        this.tree.setPreferredSize(model.getSizeTree());
         this.tree.getSelectionModel().setSelectionMode
                 (TreeSelectionModel.SINGLE_TREE_SELECTION);
 
         //Listen for when the selection changes.
-        this.tree.addTreeSelectionListener(this);
         this.panoTree.add(tree);
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -62,24 +65,35 @@ public class V_window extends JFrame implements TreeSelectionListener {
         panoToolbar= new JPanel();
         panoToolbar.setBackground(Color.RED);
         panoToolbar.setPreferredSize(model.getSizePanoToolbar());
+        this.btAddCategory = new JButton("Ajouter catégorie");
+        this.btAddPortion = new JButton("Ajouter Portion");
+        this.btAddCategory.setEnabled(false);
+        this.btAddPortion.setEnabled(false);
+        panoToolbar.add(this.btAddCategory);
+        panoToolbar.add(this.btAddPortion);
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridheight = 1;
         gbc.gridwidth = 1;
         panoMain.add(panoToolbar, gbc);
 
-        panoPreview= new JPanel();
-        panoPreview.setBackground(Color.YELLOW);
+        panoPreview= new JPanel(new FlowLayout(FlowLayout.LEADING, 10, 10));
         panoPreview.setPreferredSize(model.getSizePanoPreview());
+        this.taPreview = new JTextArea();
+        this.taPreview.setPreferredSize(model.getSizeTaPreview());
+        panoPreview.add(this.taPreview);
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.gridheight = 2;
         gbc.gridwidth = 1;
         panoMain.add(panoPreview, gbc);
 
-        panoResult= new JPanel();
+        panoResult= new JPanel(new FlowLayout(FlowLayout.LEADING, 10, 10));
         panoResult.setBackground(Color.GREEN);
         panoResult.setPreferredSize(model.getSizePanoResult());
+        this.taResult = new JTextArea();
+        this.taResult.setPreferredSize(model.getSizeTaResult());
+        panoResult.add(this.taResult);
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.gridheight = 1;
@@ -88,6 +102,7 @@ public class V_window extends JFrame implements TreeSelectionListener {
 
 
         this.setContentPane(panoMain);
+        pack();
         setVisible(true);
 
 
@@ -141,17 +156,51 @@ public class V_window extends JFrame implements TreeSelectionListener {
         this.panoResult = panoResult;
     }
 
-    public void valueChanged(TreeSelectionEvent e) {
-//Returns the last path element of the selection.
-//This method is useful only when the selection model allows a single selection.
-        System.out.println("wesh");
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode)
-                tree.getLastSelectedPathComponent();
+    public JTextArea getTaPreview() {
+        return taPreview;
+    }
 
-        if (node == null)
-            //Nothing is selected.
-            return;
+    public void setTaPreview(JTextArea taPreview) {
+        this.taPreview = taPreview;
+    }
 
-        Object nodeInfo = node.getUserObject();
+    public JTree getTree() {
+        return tree;
+    }
+
+    public void setTree(JTree tree) {
+        this.tree = tree;
+    }
+
+    public JTextArea getTaResult() {
+        return taResult;
+    }
+
+    public void setTaResult(JTextArea taResult) {
+        this.taResult = taResult;
+    }
+
+    public JButton getBtAddCategory() {
+        return btAddCategory;
+    }
+
+    public void setBtAddCategory(JButton btAddCategory) {
+        this.btAddCategory = btAddCategory;
+    }
+
+    public JButton getBtAddPortion() {
+        return btAddPortion;
+    }
+
+    public void setBtAddPortion(JButton btAddPortion) {
+        this.btAddPortion = btAddPortion;
+    }
+
+    public M_bdd getModel_bdd() {
+        return model_bdd;
+    }
+
+    public void setModel_bdd(M_bdd model_bdd) {
+        this.model_bdd = model_bdd;
     }
 }

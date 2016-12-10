@@ -102,4 +102,15 @@ public class M_bdd {
         rs.close();
         return list_portion;
     }
+
+    public void insertCategorie(String libelle, int idparent) {
+        try {
+            Statement st = connect.createStatement();
+            String line = "INSERT INTO Categorie (libelle, id_categorie_parent) VALUES ('"+libelle+"',"+idparent+");";
+            st.execute(line);
+        } catch (SQLException e) {
+            System.out.println("ERREUR DE SYNTAXE:");
+            e.printStackTrace();
+        }
+    }
 }
