@@ -28,6 +28,7 @@ public class btnActionEvent implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) this.vWindow.getTree().getLastSelectedPathComponent();
+        if (node == null) return;
         DefaultTreeModel model = (DefaultTreeModel) this.vWindow.getTree().getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
         Enumeration en = root.depthFirstEnumeration();
@@ -73,10 +74,10 @@ public class btnActionEvent implements ActionListener {
             JFileChooser c = new JFileChooser();
             // Demonstrate "Save" dialog:
             int rVal = c.showSaveDialog(vWindow);
+            System.out.println(vWindow.getTaResult().getText());
             if (rVal == JFileChooser.APPROVE_OPTION) {
                 try {
-                    String test = "feazfezfz";
-                    byte data[] = test.getBytes();
+                    byte data[] = vWindow.getTaResult().getText().getBytes();
                     FileOutputStream out = new FileOutputStream(c.getSelectedFile());
                     out.write(data);
                     out.close();

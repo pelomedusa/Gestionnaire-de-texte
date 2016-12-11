@@ -37,7 +37,8 @@ public class V_window extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridBagLayout());
         setSize(model.getSizeWindow());
-
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 
 
         panoMain = new JPanel(new FlowLayout(FlowLayout.LEADING, 0, 0));

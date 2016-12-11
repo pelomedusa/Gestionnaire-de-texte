@@ -32,6 +32,8 @@ public class V_texte extends JFrame {
         this.idparent = idparent;
         this.setTitle("Entrez le text et les tags");
         this.setSize(new Dimension(350, 200));
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 
         panoMain = new JPanel(new FlowLayout(FlowLayout.LEADING, 0, 10));
         this.taInputTexte = new JTextArea();
