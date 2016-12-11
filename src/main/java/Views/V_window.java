@@ -35,17 +35,14 @@ public class V_window extends JFrame {
     public void init(DefaultMutableTreeNode top){
         setUndecorated(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(800,800);
         setLayout(new GridBagLayout());
-        setSize(model.getSizeWindow());
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 
 
         panoMain = new JPanel(new FlowLayout(FlowLayout.LEADING, 0, 0));
-        panoMain.setPreferredSize(new Dimension(700,700));
-        panoMain.setLayout(new GridBagLayout());
-
-        GridBagConstraints gbc = new GridBagConstraints();
+        panoMain.setLayout(new BorderLayout());
 
         panoTree= new JPanel(new FlowLayout(FlowLayout.LEADING, 10, 10));
         panoTree.setPreferredSize(model.getSizePanoTree());
@@ -60,13 +57,7 @@ public class V_window extends JFrame {
         setRender();
         //Listen for when the selection changes.
         this.panoTree.add(tree);
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridheight = 3;
-        gbc.gridwidth = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.NONE;
-        panoMain.add(panoTree, gbc);
+        panoMain.add(panoTree, BorderLayout.WEST);
 
         panoToolbarCategory = new JPanel();
         panoToolbarCategory.setPreferredSize(model.getSizePanoToolbar());
@@ -95,11 +86,7 @@ public class V_window extends JFrame {
                 taPreview.getBorder(),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         panoPreview.add(this.taPreview);
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.gridheight = 2;
-        gbc.gridwidth = 1;
-        panoMain.add(panoPreview, gbc);
+        panoMain.add(panoPreview, BorderLayout.CENTER);
 
         panoResult= new JPanel(new FlowLayout(FlowLayout.LEADING, 10, 10));
         panoResult.setPreferredSize(model.getSizePanoResult());
@@ -110,14 +97,11 @@ public class V_window extends JFrame {
                 taResult.getBorder(),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         panoResult.add(this.taResult);
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.gridheight = 1;
-        gbc.gridwidth = 2;
-        panoMain.add(panoResult, gbc);
 
+        panoMain.add(panoResult, BorderLayout.SOUTH);
 
         this.setContentPane(panoMain);
+        pack();
         setVisible(true);
 
     }
@@ -159,11 +143,11 @@ public class V_window extends JFrame {
         gbc.fill = GridBagConstraints.NONE;
         if (s.equals("category")){
             panoToolbarCategory.add(btExport);
-            panoMain.add(panoToolbarCategory, gbc);
+            panoMain.add(panoToolbarCategory, BorderLayout.NORTH);
             System.out.println("add category");
         } else {
             panoToolbarPortion.add(btExport);
-            panoMain.add(panoToolbarPortion, gbc);
+            panoMain.add(panoToolbarPortion, BorderLayout.NORTH);
             System.out.println("add portion");
         }
         repaint();
