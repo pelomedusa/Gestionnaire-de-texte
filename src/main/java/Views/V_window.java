@@ -59,6 +59,7 @@ public class V_window extends JFrame {
         this.panoTree.add(tree);
         panoMain.add(panoTree, BorderLayout.WEST);
 
+
         panoToolbarCategory = new JPanel();
         panoToolbarCategory.setPreferredSize(model.getSizePanoToolbar());
         this.btAddCategory = new JButton("Ajouter catégorie");
