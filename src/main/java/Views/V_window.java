@@ -36,7 +36,7 @@ public class V_window extends JFrame {
         setUndecorated(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridBagLayout());
-        setSize(model.getSizeWindow());
+        setPreferredSize(model.getSizeWindow());
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 
@@ -118,6 +118,7 @@ public class V_window extends JFrame {
 
 
         this.setContentPane(panoMain);
+        pack();
         setVisible(true);
 
     }
