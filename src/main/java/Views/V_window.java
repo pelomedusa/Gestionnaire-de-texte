@@ -42,7 +42,7 @@ public class V_window extends JFrame {
 
 
         panoMain = new JPanel(new FlowLayout(FlowLayout.LEADING, 0, 0));
-        panoMain.setPreferredSize(model.getSizeWindow());
+        panoMain.setPreferredSize(new Dimension(700,700));
         panoMain.setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();

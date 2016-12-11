@@ -23,9 +23,9 @@ public class M_window {
     }
 
     private void init() {
-        sizeWindow = new Dimension(800,800);
+        sizeWindow = new Dimension(900,900);
         int height = (int) sizeWindow.getHeight();
-        int width = (int) sizeWindow.getWidth()-20;
+        int width = (int) sizeWindow.getWidth()-40;
 
         this.sizePanoTree = new Dimension(width/4,500);
         this.sizeTree = new Dimension(width/4-20,500-20);
