@@ -37,6 +37,7 @@ public class V_window extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800,800);
         setLayout(new GridBagLayout());
+        setPreferredSize(model.getSizeWindow());
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 
@@ -58,7 +59,6 @@ public class V_window extends JFrame {
         //Listen for when the selection changes.
         this.panoTree.add(tree);
         panoMain.add(panoTree, BorderLayout.WEST);
-
 
         panoToolbarCategory = new JPanel();
         panoToolbarCategory.setPreferredSize(model.getSizePanoToolbar());
