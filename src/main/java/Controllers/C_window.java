@@ -41,6 +41,10 @@ public class C_window {
         this.vWindow.getTree().addMouseListener(new DoubleClickListener(this.vWindow.getTree(), this.vWindow.getTaResult()));
         this.vWindow.getBtAddCategory().addActionListener(new btnActionEvent(this.vWindow));
         this.vWindow.getBtRemoveCategory().addActionListener(new btnActionEvent(this.vWindow));
+        this.vWindow.getBtSauvegarderPortion().addActionListener(new btnActionEvent(this.vWindow));
+        this.vWindow.getBtRemovePortion().addActionListener(new btnActionEvent(this.vWindow));
+        this.vWindow.getBtAddPortion().addActionListener(new btnActionEvent(this.vWindow));
+        this.vWindow.getBtExport().addActionListener(new btnActionEvent(this.vWindow));
     }
 
     private void createTree() {
@@ -89,21 +93,28 @@ public class C_window {
 
     }
 
+    private void resetDatabase() throws FileNotFoundException, SQLException {
+        this.mBdd.importSQL(new FileInputStream("db/create.sql"));
+    }
+
     private void prepareBdd(){
         try {
             this.mBdd = new M_bdd("test.db");
-            this.mBdd.importSQL(new FileInputStream("db/create.sql"));
             this.list_categories =   this.mBdd.getAllCategorie();
             this.list_portion =  this.mBdd.getAllPortionText();
         } catch (ClassNotFoundException e) {
-            System.out.println("Erreur de connection à la base de donnée");
+            System.out.println("Erreur de connection à la base de données");
             e.printStackTrace();
         } catch (SQLException e) {
-            System.out.println("Erreur de syntaxe SQL");
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            System.out.println("Le fichier de base de donnée n'existe pas");
-            e.printStackTrace();
+            try {
+                resetDatabase();
+                System.out.println("La BDD est vide, elle est initializée");
+                prepareBdd();
+            } catch (FileNotFoundException e1) {
+                e1.printStackTrace();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 

@@ -28,11 +28,11 @@ public class V_input extends JFrame {
     protected JTextArea taInput;
     protected int idParent;
 
-    public V_input(V_window view, String type, int idparent) {
+    public V_input(V_window view, int idparent) {
         super();
         this.idParent = idparent;
         this.vWindow = view;
-        this.setTitle("Hey?");
+        this.setTitle("Titre de la categorie?");
         this.setSize(new Dimension(200,90));
 
         panoMain = new JPanel(new FlowLayout(FlowLayout.LEADING, 0, 0));

@@ -3,6 +3,7 @@ package Listeners;
 import App.Categorie;
 import App.Portion_text;
 import Views.V_input;
+import Views.V_texte;
 import Views.V_window;
 
 import javax.swing.*;
@@ -10,7 +11,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Enumeration;
 
 /**
@@ -25,18 +27,17 @@ public class btnActionEvent implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (((JButton) e.getSource()) == vWindow.getBtAddCategory()){
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) this.vWindow.getTree().getLastSelectedPathComponent();
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) this.vWindow.getTree().getLastSelectedPathComponent();
+        DefaultTreeModel model = (DefaultTreeModel) this.vWindow.getTree().getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
+        Enumeration en = root.depthFirstEnumeration();
+
+        if (e.getSource() == vWindow.getBtAddCategory()){
             int idparent = ((Categorie) node.getUserObject()).getId();
-            V_input vInput = new V_input(this.vWindow,"categorie", idparent);
+            V_input vInput = new V_input(this.vWindow, idparent);
             vInput.setListener();
-        } else if (((JButton) e.getSource()) == vWindow.getBtRemoveCategory()){
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) this.vWindow.getTree().getLastSelectedPathComponent();
+        } else if (e.getSource() == vWindow.getBtRemoveCategory()){
 
-            DefaultTreeModel model = (DefaultTreeModel) this.vWindow.getTree().getModel();
-            DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
-
-            Enumeration en = root.depthFirstEnumeration();
             while (en.hasMoreElements()) {
                 DefaultMutableTreeNode nodeFound = (DefaultMutableTreeNode) en.nextElement();
 
@@ -47,6 +48,42 @@ public class btnActionEvent implements ActionListener {
 
             }
             model.reload(root);
+        }else if (e.getSource() == vWindow.getBtSauvegarderPortion()){
+            Portion_text pt = (Portion_text) node.getUserObject();
+            pt.setContenu(vWindow.getTaPreview().getText());
+            this.vWindow.getModel_bdd().changeText(pt.getId(), pt.getContenu());
+        }else if (e.getSource() == vWindow.getBtRemovePortion()){
+            Portion_text pt = (Portion_text) node.getUserObject();
+            this.vWindow.getModel_bdd().removePortion(pt.getId());
+
+            while (en.hasMoreElements()) {
+                DefaultMutableTreeNode nodeFound = (DefaultMutableTreeNode) en.nextElement();
+                if (node == nodeFound){
+                    nodeFound.removeFromParent();
+                }
+
+            }
+            model.reload(root);
+        }else if (e.getSource() == vWindow.getBtAddPortion()){
+            Categorie cat = (Categorie) node.getUserObject();
+            V_texte vText = new V_texte(this.vWindow, cat.getId());
+            vText.setListener();
+        }
+        else if (e.getSource() == vWindow.getBtExport()){
+            JFileChooser c = new JFileChooser();
+            // Demonstrate "Save" dialog:
+            int rVal = c.showSaveDialog(vWindow);
+            if (rVal == JFileChooser.APPROVE_OPTION) {
+                try {
+                    String test = "feazfezfz";
+                    byte data[] = test.getBytes();
+                    FileOutputStream out = new FileOutputStream(c.getSelectedFile());
+                    out.write(data);
+                    out.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
         }
     }
 

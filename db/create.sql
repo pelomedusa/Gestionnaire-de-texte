@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS categorie;
 DROP TABLE IF EXISTS portion_text;
 
+
 CREATE TABLE categorie(
   id integer primary key AUTOINCREMENT,
   libelle text NOT NULL,

@@ -137,7 +137,6 @@ public class M_bdd {
         try {
             Statement st = connect.createStatement();
             st.execute("DELETE FROM Categorie WHERE id="+id+";");
-            System.out.println("DELETE FROM Categorie WHERE id="+id+";");
         } catch (SQLException e) {
             System.out.println("ERREUR DE SYNTAXE:");
             e.printStackTrace();
@@ -148,7 +147,7 @@ public class M_bdd {
         try {
             Statement st = connect.createStatement();
             st.execute("DELETE FROM Portion_text WHERE id="+id+";");
-            System.out.println("DELETE FROM Portion_text WHERE id="+id+";");
+            selectAllFromPortion();
 
         } catch (SQLException e) {
             System.out.println("ERREUR DE SYNTAXE:");
@@ -156,4 +155,33 @@ public class M_bdd {
         }
     }
 
+    public void changeText(int id, String contenu) {
+        try {
+            Statement st = connect.createStatement();
+            st.execute("UPDATE Portion_text SET contenu='"+contenu+"' WHERE id="+id+";");
+            selectAllFromPortion();
+        } catch (SQLException e) {
+            System.out.println("ERREUR DE SYNTAXE:");
+            e.printStackTrace();
+        }
+    }
+
+    public int insertPortion(String text,String tags, int idparent) throws SQLException {
+        PreparedStatement statement = connect.prepareStatement("INSERT INTO Portion_text(contenu,mot_cle,id_categorie) VALUES ('"+text+"','"+tags+"',"+idparent+");",
+                        Statement.RETURN_GENERATED_KEYS);
+
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Creating user failed, no rows affected.");
+            }
+
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                return (int) generatedKeys.getLong(1);
+            }
+            else {
+                throw new SQLException("Creating user failed, no ID obtained.");
+            }
+    }
 }
