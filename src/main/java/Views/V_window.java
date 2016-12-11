@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 
@@ -47,7 +48,10 @@ public class V_window extends JFrame {
 
         panoTree= new JPanel(new FlowLayout(FlowLayout.LEADING, 10, 10));
         panoTree.setPreferredSize(model.getSizePanoTree());
-        this.tree = new JTree(top);
+
+        DefaultTreeModel treeModel = new DefaultTreeModel(top);
+        //treeModel.addTreeModelListener(new MyTreeModelListener());
+        this.tree = new JTree(treeModel);
         this.tree.setPreferredSize(model.getSizeTree());
         this.tree.getSelectionModel().setSelectionMode
                 (TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -105,10 +109,12 @@ public class V_window extends JFrame {
         pack();
         setVisible(true);
 
-
-
     }
 
+    public void updateTree(DefaultMutableTreeNode top) {
+        DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
+        model.reload(top);
+    }
 
     public M_window getModel() {
         return model;
@@ -203,4 +209,5 @@ public class V_window extends JFrame {
     public void setModel_bdd(M_bdd model_bdd) {
         this.model_bdd = model_bdd;
     }
+
 }

@@ -1,6 +1,8 @@
 package Listeners;
 
 import App.Categorie;
+import Controllers.C_window;
+import Views.V_input;
 import Views.V_window;
 
 import javax.swing.*;
@@ -15,17 +17,19 @@ import java.util.List;
  */
 public class btnActionEvent implements ActionListener {
 
-    protected V_window vWindow;
+    protected C_window cWindow;
 
-    public btnActionEvent(V_window vWindow) {
-        this.vWindow = vWindow;
+    public btnActionEvent(C_window cWindow) {
+        this.cWindow = cWindow;
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (((JButton) e.getSource()) == vWindow.getBtAddCategory()){
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) this.vWindow.getTree().getLastSelectedPathComponent();
+        if (((JButton) e.getSource()) == cWindow.getvWindow().getBtAddCategory()){
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) this.cWindow.getvWindow().getTree().getLastSelectedPathComponent();
             int idparent = ((Categorie) node.getUserObject()).getId();
-            this.vWindow.getModel_bdd().insertCategorie("Nouvelle categorie", idparent);
+            V_input vInput = new V_input(this.cWindow,"categorie", idparent);
+            vInput.setListener();
         }
     }
 }
+

@@ -3,6 +3,7 @@ package Controllers;
 import App.Categorie;
 import App.Portion_text;
 import Listeners.CustomSelectionListener;
+import Listeners.CustomTreeModelListener;
 import Listeners.DoubleClickListener;
 import Listeners.btnActionEvent;
 import Models.M_bdd;
@@ -10,10 +11,12 @@ import Models.M_window;
 import Views.V_window;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -33,6 +36,10 @@ public class C_window {
 
         this.vWindow = new V_window(mWindow, mBdd);
         this.createTree();
+        this.vWindow.getTree().addTreeSelectionListener(new CustomSelectionListener(this.vWindow));
+        this.vWindow.getTree().getModel().addTreeModelListener(new CustomTreeModelListener());
+        this.vWindow.getTree().addMouseListener(new DoubleClickListener(this.vWindow.getTree(), this.vWindow.getTaResult()));
+        this.vWindow.getBtAddCategory().addActionListener(new btnActionEvent(this));
     }
 
     private void createTree() {
@@ -44,9 +51,6 @@ public class C_window {
         }
         this.vWindow.init(top);
         createNodes(top);
-        this.vWindow.getTree().addTreeSelectionListener(new CustomSelectionListener(this.vWindow));
-        this.vWindow.getTree().addMouseListener(new DoubleClickListener(this.vWindow.getTree(), this.vWindow.getTaResult()));
-        this.vWindow.getBtAddCategory().addActionListener(new btnActionEvent(this.vWindow));
     }
 
     private void createNodes(DefaultMutableTreeNode top) {
@@ -102,27 +106,76 @@ public class C_window {
         }
     }
 
-    public static void print(DefaultMutableTreeNode aNode)
-    {
-        String name = aNode.toString();
-        int level= aNode.getLevel();
-        String placement = "";
-        while (level > 0)
-        {
-            placement += ">";
-            level--;
-        }
-        if(aNode.isLeaf())
-        {
-            System.out.println(placement + name);
-            return;
-        }
+    public void updateTree(String text, int idparent) {
+        try {
+            this.list_categories =   this.mBdd.getAllCategorie();
+            this.list_portion =  this.mBdd.getAllPortionText();
+            Categorie cat = null;
+            for (Categorie c : list_categories) {
+                if (c.getId_parent() == idparent){
+                    cat = c;
+                }
+            }
 
-        System.out.println(placement + "--- " + name + " ---");
-        for(int i = 0 ; i < aNode.getChildCount() ; i++)
-        {
-            print((DefaultMutableTreeNode)aNode.getChildAt(i));
+            DefaultTreeModel model = (DefaultTreeModel)this.getvWindow().getTree().getModel();
+            DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
+
+            Enumeration en = root.depthFirstEnumeration();
+            while (en.hasMoreElements()) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) en.nextElement();
+                if (node.getUserObject() instanceof Categorie){
+                    if (((Categorie) node.getUserObject()).getId() == idparent){
+                        node.add(new DefaultMutableTreeNode(cat));
+                    }
+                }
+            }
+            model.reload(root);
+           // this.vWindow.updateTree(top);
+        } catch (SQLException e) {
+            System.out.println("Erreur de syntaxe SQL");
+            e.printStackTrace();
         }
-        System.out.println(placement + "+++ " + name + " +++");
     }
+
+
+    public M_window getmWindow() {
+        return mWindow;
+    }
+
+    public void setmWindow(M_window mWindow) {
+        this.mWindow = mWindow;
+    }
+
+    public V_window getvWindow() {
+        return vWindow;
+    }
+
+    public void setvWindow(V_window vWindow) {
+        this.vWindow = vWindow;
+    }
+
+    public M_bdd getmBdd() {
+        return mBdd;
+    }
+
+    public void setmBdd(M_bdd mBdd) {
+        this.mBdd = mBdd;
+    }
+
+    public List<Categorie> getList_categories() {
+        return list_categories;
+    }
+
+    public void setList_categories(List<Categorie> list_categories) {
+        this.list_categories = list_categories;
+    }
+
+    public List<Portion_text> getList_portion() {
+        return list_portion;
+    }
+
+    public void setList_portion(List<Portion_text> list_portion) {
+        this.list_portion = list_portion;
+    }
+
 }
