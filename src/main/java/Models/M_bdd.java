@@ -70,6 +70,25 @@ public class M_bdd {
         rs.close();
     }
 
+    public void selectAllFromPortion() throws SQLException {
+        Statement st = connect.createStatement();
+        ResultSet rs = st.executeQuery("SELECT * FROM portion_text");
+        while ( rs.next() ) {
+            int id = rs.getInt("id");
+            String contenu = rs.getString("contenu");
+            String motcle = rs.getString("mot_cle");
+            int id_parent = rs.getInt("id_categorie");
+
+            System.out.println("id = " + id);
+            System.out.println("contenu = " + contenu);
+            System.out.println("motcle = " + motcle);
+            System.out.println("id_parent = " + id_parent);
+        }
+
+        st.close();
+        rs.close();
+    }
+
     public List<Categorie> getAllCategorie() throws SQLException {
         List<Categorie> list_cate = new ArrayList<Categorie>();
         Statement st = connect.createStatement();
@@ -113,4 +132,28 @@ public class M_bdd {
             e.printStackTrace();
         }
     }
+
+    public void removeCategory(int id) {
+        try {
+            Statement st = connect.createStatement();
+            st.execute("DELETE FROM Categorie WHERE id="+id+";");
+            System.out.println("DELETE FROM Categorie WHERE id="+id+";");
+        } catch (SQLException e) {
+            System.out.println("ERREUR DE SYNTAXE:");
+            e.printStackTrace();
+        }
+    }
+
+    public void removePortion(int id) {
+        try {
+            Statement st = connect.createStatement();
+            st.execute("DELETE FROM Portion_text WHERE id="+id+";");
+            System.out.println("DELETE FROM Portion_text WHERE id="+id+";");
+
+        } catch (SQLException e) {
+            System.out.println("ERREUR DE SYNTAXE:");
+            e.printStackTrace();
+        }
+    }
+
 }

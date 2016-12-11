@@ -33,11 +33,11 @@ public class CustomSelectionListener implements TreeSelectionListener {
         if (nodeInfo instanceof Portion_text){
             this.vWindow.getTaPreview().setText(((Portion_text) nodeInfo).getContenu());
             this.vWindow.getBtAddCategory().setEnabled(false);
-            this.vWindow.getBtAddPortion().setEnabled(false);
+            this.vWindow.getBtRemoveCategory().setEnabled(false);
 
         } else {
             this.vWindow.getBtAddCategory().setEnabled(true);
-            this.vWindow.getBtAddPortion().setEnabled(true);
+            this.vWindow.getBtRemoveCategory().setEnabled(true);
         }
     }
 }

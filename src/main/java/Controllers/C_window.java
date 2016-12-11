@@ -39,7 +39,8 @@ public class C_window {
         this.vWindow.getTree().addTreeSelectionListener(new CustomSelectionListener(this.vWindow));
         this.vWindow.getTree().getModel().addTreeModelListener(new CustomTreeModelListener());
         this.vWindow.getTree().addMouseListener(new DoubleClickListener(this.vWindow.getTree(), this.vWindow.getTaResult()));
-        this.vWindow.getBtAddCategory().addActionListener(new btnActionEvent(this));
+        this.vWindow.getBtAddCategory().addActionListener(new btnActionEvent(this.vWindow));
+        this.vWindow.getBtRemoveCategory().addActionListener(new btnActionEvent(this.vWindow));
     }
 
     private void createTree() {
@@ -106,36 +107,7 @@ public class C_window {
         }
     }
 
-    public void updateTree(String text, int idparent) {
-        try {
-            this.list_categories =   this.mBdd.getAllCategorie();
-            this.list_portion =  this.mBdd.getAllPortionText();
-            Categorie cat = null;
-            for (Categorie c : list_categories) {
-                if (c.getId_parent() == idparent){
-                    cat = c;
-                }
-            }
 
-            DefaultTreeModel model = (DefaultTreeModel)this.getvWindow().getTree().getModel();
-            DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
-
-            Enumeration en = root.depthFirstEnumeration();
-            while (en.hasMoreElements()) {
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) en.nextElement();
-                if (node.getUserObject() instanceof Categorie){
-                    if (((Categorie) node.getUserObject()).getId() == idparent){
-                        node.add(new DefaultMutableTreeNode(cat));
-                    }
-                }
-            }
-            model.reload(root);
-           // this.vWindow.updateTree(top);
-        } catch (SQLException e) {
-            System.out.println("Erreur de syntaxe SQL");
-            e.printStackTrace();
-        }
-    }
 
 
     public M_window getmWindow() {

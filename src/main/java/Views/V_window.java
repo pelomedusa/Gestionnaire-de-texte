@@ -1,13 +1,9 @@
 package Views;
 
-import App.Categorie;
-import App.Portion_text;
 import Models.M_bdd;
 import Models.M_window;
 
 import javax.swing.*;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
@@ -20,9 +16,9 @@ public class V_window extends JFrame {
     private M_bdd model_bdd;
     private M_window model;
 
-    private JPanel panoMain, panoTree, panoToolbar, panoPreview, panoResult;
+    private JPanel panoMain, panoTree, panoToolbarCategory, panoPreview, panoResult;
     private JTextArea taPreview,taResult;
-    private JButton btAddCategory, btAddPortion;
+    private JButton btAddCategory, btRemoveCategory;
     protected JTree tree;
 
     public V_window(M_window model, M_bdd mBdd){
@@ -66,20 +62,20 @@ public class V_window extends JFrame {
         gbc.fill = GridBagConstraints.NONE;
         panoMain.add(panoTree, gbc);
 
-        panoToolbar= new JPanel();
-        panoToolbar.setBackground(Color.RED);
-        panoToolbar.setPreferredSize(model.getSizePanoToolbar());
+        panoToolbarCategory = new JPanel();
+        panoToolbarCategory.setBackground(Color.RED);
+        panoToolbarCategory.setPreferredSize(model.getSizePanoToolbar());
         this.btAddCategory = new JButton("Ajouter catégorie");
-        this.btAddPortion = new JButton("Ajouter Portion");
+        this.btRemoveCategory = new JButton("Supprimer catégorie");
         this.btAddCategory.setEnabled(false);
-        this.btAddPortion.setEnabled(false);
-        panoToolbar.add(this.btAddCategory);
-        panoToolbar.add(this.btAddPortion);
+        this.btRemoveCategory.setEnabled(false);
+        panoToolbarCategory.add(this.btAddCategory);
+        panoToolbarCategory.add(this.btRemoveCategory);
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridheight = 1;
         gbc.gridwidth = 1;
-        panoMain.add(panoToolbar, gbc);
+        panoMain.add(panoToolbarCategory, gbc);
 
         panoPreview= new JPanel(new FlowLayout(FlowLayout.LEADING, 10, 10));
         panoPreview.setPreferredSize(model.getSizePanoPreview());
@@ -111,10 +107,6 @@ public class V_window extends JFrame {
 
     }
 
-    public void updateTree(DefaultMutableTreeNode top) {
-        DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
-        model.reload(top);
-    }
 
     public M_window getModel() {
         return model;
@@ -138,12 +130,12 @@ public class V_window extends JFrame {
         this.panoTree = panoTree;
     }
 
-    public JPanel getPanoToolbar() {
-        return panoToolbar;
+    public JPanel getPanoToolbarCategory() {
+        return panoToolbarCategory;
     }
 
-    public void setPanoToolbar(JPanel panoToolbar) {
-        this.panoToolbar = panoToolbar;
+    public void setPanoToolbarCategory(JPanel panoToolbarCategory) {
+        this.panoToolbarCategory = panoToolbarCategory;
     }
 
     public JPanel getPanoPreview() {
@@ -194,12 +186,12 @@ public class V_window extends JFrame {
         this.btAddCategory = btAddCategory;
     }
 
-    public JButton getBtAddPortion() {
-        return btAddPortion;
+    public JButton getBtRemoveCategory() {
+        return btRemoveCategory;
     }
 
-    public void setBtAddPortion(JButton btAddPortion) {
-        this.btAddPortion = btAddPortion;
+    public void setBtRemoveCategory(JButton btRemoveCategory) {
+        this.btRemoveCategory = btRemoveCategory;
     }
 
     public M_bdd getModel_bdd() {

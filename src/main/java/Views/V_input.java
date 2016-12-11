@@ -1,14 +1,19 @@
 package Views;
 
+import App.Categorie;
 import Controllers.C_window;
 import Models.M_bdd;
 import Models.M_window;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.*;
+import java.util.List;
 
 /**
  * Created by Pelomedusa on 09/12/2016.
@@ -16,17 +21,17 @@ import java.sql.SQLException;
 public class V_input extends JFrame {
 
 
-    protected C_window cWindow;
+    protected V_window vWindow;
     protected JPanel panoMain;
     protected JLabel labIntro;
     protected JButton btnValider;
     protected JTextArea taInput;
     protected int idParent;
 
-    public V_input(C_window controller, String type, int idparent) {
+    public V_input(V_window view, String type, int idparent) {
         super();
         this.idParent = idparent;
-        this.cWindow = controller;
+        this.vWindow = view;
         this.setTitle("Hey?");
         this.setSize(new Dimension(200,90));
 
@@ -48,19 +53,45 @@ public class V_input extends JFrame {
         btnValider.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 V_input vInput = (V_input) ((JButton)e.getSource()).getClientProperty( "vInput" );
-                vInput.getcWindow().getmBdd().insertCategorie(vInput.getTaInput().getText(),vInput.getIdParent());
-                vInput.getcWindow().updateTree(vInput.getTaInput().getText(),vInput.getIdParent());
+                vInput.getvWindow().getModel_bdd().insertCategorie(vInput.getTaInput().getText(),vInput.getIdParent());
                 vInput.dispose();
+
+                try {
+                    List<Categorie> list_categories =   vInput.getvWindow().getModel_bdd().getAllCategorie();
+                    Categorie cat = null;
+                    for (Categorie c : list_categories) {
+                        if (c.getId_parent() == vInput.getIdParent()){
+                            cat = c;
+                        }
+                    }
+
+                    DefaultTreeModel model = (DefaultTreeModel)vInput.getvWindow().getTree().getModel();
+                    DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
+
+                    Enumeration en = root.depthFirstEnumeration();
+                    while (en.hasMoreElements()) {
+                        DefaultMutableTreeNode node = (DefaultMutableTreeNode) en.nextElement();
+                        if (node.getUserObject() instanceof Categorie){
+                            if (((Categorie) node.getUserObject()).getId() == vInput.getIdParent()){
+                                node.add(new DefaultMutableTreeNode(cat));
+                            }
+                        }
+                    }
+                    model.reload(root);
+                } catch (SQLException er) {
+                    System.out.println("Erreur de syntaxe SQL");
+                    er.printStackTrace();
+                }
             }
         });
     }
 
-    public C_window getcWindow() {
-        return cWindow;
+    public V_window getvWindow() {
+        return vWindow;
     }
 
-    public void setcWindow(C_window cWindow) {
-        this.cWindow = cWindow;
+    public void setvWindow(V_window vWindow) {
+        this.vWindow = vWindow;
     }
 
     public JPanel getPanoMain() {
