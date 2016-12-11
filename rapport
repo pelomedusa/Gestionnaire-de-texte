@@ -1,0 +1,47 @@
+RAPPORT:
+
+---- ARCHITECTURE ----
+
+Model MVC:
+Les fichiers sont répartis dans les dossiers Models/Views/Controllers.
+Les controleurs d'évenements sont gérés dans les classes du dossier Listeners.
+
+-- Views --
+
+* Une vue principale (v_window)
+* Une vue pour entrer le nom de la nouvelle catégorie lors de sa création (v_input).
+* Une vue pour entrer le texte, et les tags séparés par des virgules (v_texte)
+
+-- Models --
+* Un modèle pour la base de donnée (M_bdd)
+* Un modèle pour la vu (M_window)
+
+-- Controllers --
+* C_main gère le lancement de l'application
+* C_window controlle les vues.
+* Divers listeners servent à gérer les boutons et les clics/double-clics sur l'arbre.
+
+
+
+---- UTILISATION ----
+
+La base de donnée s'initialise par elle même au premier lancement, il n'est donc PAS nécéssaire d'éxécuter le script create.sql au préalable.
+
+La vue contient:
+	- l'arbre des catégories et des portions de texte à gauche
+	- La zone d'affichage et de modification des portions de texte à droite
+	- LA texte généré modifiable en bas (vide par défaut)
+
+Double cliquer sur une categorie l'ouvre et affiche les controlles:
+	- Ajouter catégorie -> ouvre une pop-up afin d'entrer le nom de la catégorie
+	- Supprimer catégorie
+	- Ajouter portion de texte -> ouvre une pop-up afin d'entrer le texte, et les tags. Chaque tags sera séparé par une virgule.
+	- Exporter --> permet d'exporter le résultat du texte généré.
+
+Selectionner une portion de texte affiche son texte modifiable dans la zone de droite et affiche mes controlles:
+	- Sauvegarder la portion (après avoir modifié son contenu)
+	- Supprimer la portion
+	- Exporter --> permet d'exporter le résultat du texte généré.
+
+Pour ajouter du texte généré, il suffit de double cliquer une portion de texte.
+
