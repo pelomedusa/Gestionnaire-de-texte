@@ -118,7 +118,6 @@ public class V_window extends JFrame {
 
 
         this.setContentPane(panoMain);
-        pack();
         setVisible(true);
 
     }
